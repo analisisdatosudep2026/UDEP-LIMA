@@ -118,6 +118,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--gris-bg);color:var(--text
       renderGeneral(f2_27I,f2_26I,f2_25I,'g1','2027-I','2026-I','2025-I');
       renderGeneral(f2_27II,f2_26II,f2_25II,'g2','2026-II','2025-II','2024-II');
       aplicarFiltrosGlobales();
+      // Cargar histórico
+      if(d.raw25 && d.raw25.length>0){
+        window.__raw25 = d.raw25;
+        window.__raw26 = d.raw26||[];
+        var f2_26I_h = allF2_26.filter(function(r){return(r['SEMESTRE DE INICIO']||'').toString().trim().toUpperCase()==='2026-I';});
+        renderHistorico(f2_27I, f2_26I_h, {prog:'TODOS',mod:'TODOS'});
+      }
       ss('✓ Actualizado '+new Date().toLocaleDateString('es-PE',{day:'2-digit',month:'long',year:'numeric'}));
     })
     .catch(function(e){ss('❌ '+e.message);console.error(e);});
@@ -1478,12 +1485,17 @@ function renderSeguimiento(data,metas,tabId,titulo,progFiltro){
 }
 
 function renderHistorico(f2_27_all, f2_26_all, filtros){
-  // Parse historic file
-  const wb25 = XLSX.read(files.hist,{type:'array',cellDates:true});
-  const sh25name = wb25.SheetNames.find(s=>s.toUpperCase()==='C2025');
-  const sh26name = wb25.SheetNames.find(s=>s.toUpperCase()==='C2026');
-  const raw25 = sh25name ? XLSX.utils.sheet_to_json(wb25.Sheets[sh25name],{defval:''}) : [];
-  const raw26 = sh26name ? XLSX.utils.sheet_to_json(wb25.Sheets[sh26name],{defval:''}) : [];
+  // Usar datos del JSON si están disponibles, si no leer del archivo
+  let raw25=[], raw26=[];
+  if(window.__raw25 && window.__raw25.length>0){
+    raw25=window.__raw25; raw26=window.__raw26||[];
+  } else if(files.hist){
+    const wb25 = XLSX.read(files.hist,{type:'array',cellDates:true});
+    const sh25name = wb25.SheetNames.find(s=>s.toUpperCase()==='C2025');
+    const sh26name = wb25.SheetNames.find(s=>s.toUpperCase()==='C2026');
+    raw25 = sh25name ? XLSX.utils.sheet_to_json(wb25.Sheets[sh25name],{defval:''}) : [];
+    raw26 = sh26name ? XLSX.utils.sheet_to_json(wb25.Sheets[sh26name],{defval:''}) : [];
+  } else { return; }
 
   // Normalize programa for C2025 (uses PROGRAMA column)
   // Normalize programa for C2026 (uses PROGRAMA A MATRICULARSE with abbreviations)
