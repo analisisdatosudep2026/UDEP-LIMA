@@ -112,7 +112,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--gris-bg);color:var(--text
       ex26I=d.ex26I||[]; ex26II=d.ex26II||[];
       f2_27I=d.f2_27I||[]; f2_27II=d.f2_27II||[];
       f2_25I=d.f2_25I||[]; f2_25II=d.f2_25II||[];
-      document.getElementById('btnExp').disabled=true;
+      var _bExp=document.getElementById('btnExp'); if(_bExp) _bExp.disabled=true;
       var f2_26I=allF2_26.filter(function(r){return(r['SEMESTRE DE INICIO']||'').toString().trim().toUpperCase()==='2026-I';});
       var f2_26II=allF2_26.filter(function(r){return(r['SEMESTRE DE INICIO']||'').toString().trim().toUpperCase()==='2025-II';});
       renderGeneral(f2_27I,f2_26I,f2_25I,'g1','2027-I','2026-I','2025-I');
@@ -2185,7 +2185,7 @@ function exportarHTML(){
       allF2_27=d.allF2_27||[]; allF2_26=d.allF2_26||[]; allF2_25=d.allF2_25||[];
       ex27I=d.ex27I||[]; ex27II=d.ex27II||[]; ex26I=d.ex26I||[]; ex26II=d.ex26II||[];
       f2_27I=d.f2_27I||[]; f2_27II=d.f2_27II||[]; f2_25I=d.f2_25I||[]; f2_25II=d.f2_25II||[];
-      document.getElementById('btnExp').disabled=true;
+      var _bExp=document.getElementById('btnExp'); if(_bExp) _bExp.disabled=true;
       const dataI=calcData(ex27I,ex26I,f2_27I,d.allF2_26.filter(r=>{
         const sem=(r['SEMESTRE DE INICIO']||'').toString().trim().toUpperCase();
         return sem==='2026-I';
